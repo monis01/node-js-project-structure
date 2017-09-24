@@ -29,9 +29,8 @@ class Crypt {
 		   iv = new Buffer(textParts.shift(), 'hex'),
 		   encryptedText = new Buffer(textParts.join(':'), 'hex'),
 		   decipher = crypto.createDecipheriv(this.algo, new Buffer(this.key), iv),
-		   decrypted = decipher.update(encryptedText)
+		   decrypted = decipher.update(encryptedText);
 
-		   
 		  decrypted = Buffer.concat([decrypted, decipher.final()]);
 
 	  return decrypted.toString();

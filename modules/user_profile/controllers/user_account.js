@@ -30,7 +30,8 @@ exports.register = (req, res) => {
 
         res.status(resObj.statusCode).json(resObj);
 
-    })
+    });
+
 }
 
 
@@ -68,7 +69,7 @@ exports.login = (req, res) => {
         } else {
 
             resObj.status = 'failed'
-            resObj.statusCode = 400
+            resObj.statusCode = 200
             resObj.message = 'Incorrect user email or password'
 
         }
@@ -82,26 +83,14 @@ exports.login = (req, res) => {
 exports.updateProfile = (req, res) => {
 
     let data = req.body,
-        conditions = {'email': data.email },
-        resObj = {};
-        
-    if (data.email != req.tokenInfo.email) {
-
-            resObj.status = 'failed'
-            resObj.statusCode = 401
-            resObj.auth = 'failed'
-            resObj.message = `${data.email} is not valid email to update this account`
-
-            return res.status(resObj.statusCode).json(resObj);    
-    }
+        conditions = {'email': data.email };
 
     delete data.password
     delete data.email
 
-    
     UserProfileModel.update(conditions, data, (err, update) => {
 
-       // let resObj = {};
+        let resObj = {};
 
         if (err) {
 
@@ -120,9 +109,9 @@ exports.updateProfile = (req, res) => {
         } else {
 
             resObj.status = 'failed'
-            resObj.statusCode = 400
+            resObj.statusCode = 200
             resObj.error = err
-            resObj.message = `${req.tokenInfo.email} does not exist`
+            resObj.message = `${data.email} does not exist`
 
         }
 
@@ -144,8 +133,8 @@ exports.changePassword = (req, res) => {
 
                 let resObj = {}
                 resObj.status = 'failed'
-                resObj.statusCode = 400
-                resObj.message = 'New password and comfirm password are not equal' 
+                resObj.statusCode = 200
+                resObj.message = 'new password and comfirm password are not equal' 
                 cb(resObj)   
 
             }else{
@@ -166,7 +155,7 @@ exports.changePassword = (req, res) => {
 
                     let resObj = {}
                     resObj.status = 'failed'
-                    resObj.statusCode = 400
+                    resObj.statusCode = 200
                     resObj.error = err 
                     resObj.message = err ? 'some error occurred under user finding to update password' 
                                          : !user 

@@ -1,5 +1,5 @@
 const path			= require('path'),
-	jwt 			= require('./jwt');
+	jwt = require('./jwt');
 
 console.log(/[A-Z]/.test('abcSshfskdf'))
 
@@ -17,8 +17,6 @@ class Middleware {
 			next();
 	}
 
-	//@ citation required
-	
 	validatePassword(req, res, next) {
 
 		let format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/,
@@ -33,31 +31,18 @@ class Middleware {
 			if (length < minLength || length > maxLength || havingSpace || !havingSpecialChar) {
 	            
 	            resObj.status = 'failed' ;
-	            resObj.statusCode = 400  ; //@ failed status code is never 200 
-	         
-	         	//@ password hint should be shown on front end and to be handled there only, 
-	         	//@ server should not be dicating the password hints
-	         	//@ server responsonble for only validation and not suggestions
-	            //resObj.hint = 'Password@' ; 
-
-	            //@ instead of 
-	            // resObj.message = length < minLength  
-	            // 				? 'password minimum length should be '+minLength
-	            // 				: length > maxLength
-	            // 				? 'password maximum length should be '+maxLength
-	            // 				: havingSpace
-	            // 				? 'password should not contain any space'
-	            // 				: 'password should have one special character'
-
-	            //@ can be
-	            if(length < minLength || length > maxLength){
-	            	resObj.message = "password length shoud be not be less than " + minLength + " and should not be greater than " +maxLength ;
-	            }else if (havingSpace || !havingSpecialChar){
-	            	resObj.message = "password should not contain any spaces or special character ";
-	            }
+	            resObj.statusCode = 200  ;
+	            resObj.hint = 'Password@' ;
+	            resObj.message = length < minLength  
+	            				? 'password minimum length should be 8'
+	            				: length > maxLength
+	            				? 'password minimum length should be 12'
+	            				: havingSpace
+	            				? 'password should not contain white space'
+	            				: 'password should have one special character'
 
 	            res.status(resObj.statusCode).json(resObj);
-	            
+
 			}else{
 				next() ;		
 			}
